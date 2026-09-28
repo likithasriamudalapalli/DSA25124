@@ -1,0 +1,366 @@
+# Node class
+class Node:
+    def __init__(self, data):
+        self.data = data       # Store the data
+        self.next = None       # Pointer to the next node
+
+
+# Circular Linked List class
+class CircularLinkedList:
+    def __init__(self):
+        self.head = None       # Initially, the list is empty
+
+
+    # 1. Create Linked List
+    def create(self):
+        n = int(input("Enter number of nodes: "))
+
+        for i in range(n):
+            data = int(input(f"Enter data for node {i + 1}: "))
+            new_node = Node(data)
+
+            # If the list is empty
+            if self.head is None:
+                self.head = new_node
+                new_node.next = self.head
+
+            else:
+                # Traverse to the last node
+                temp = self.head
+
+                while temp.next != self.head:
+                    temp = temp.next
+
+                # Insert new node at the end
+                temp.next = new_node
+                new_node.next = self.head
+
+        print("Circular Linked List created successfully.")
+
+
+    # 2. Insert at Beginning
+    def insert_beginning(self):
+        data = int(input("Enter data: "))
+        new_node = Node(data)
+
+        # If list is empty
+        if self.head is None:
+            self.head = new_node
+            new_node.next = self.head
+
+        else:
+            # Find the last node
+            temp = self.head
+
+            while temp.next != self.head:
+                temp = temp.next
+
+            # New node points to current head
+            new_node.next = self.head
+
+            # Last node points to new head
+            temp.next = new_node
+
+            # Update head
+            self.head = new_node
+
+        print("Node inserted at beginning.")
+
+
+    # 3. Insert at End
+    def insert_end(self):
+        data = int(input("Enter data: "))
+        new_node = Node(data)
+
+        # If list is empty
+        if self.head is None:
+            self.head = new_node
+            new_node.next = self.head
+
+        else:
+            # Find the last node
+            temp = self.head
+
+            while temp.next != self.head:
+                temp = temp.next
+
+            # Last node points to new node
+            temp.next = new_node
+
+            # New node points to head
+            new_node.next = self.head
+
+        print("Node inserted at end.")
+
+
+    # 4. Insert at Index
+    def insert_at_index(self):
+        index = int(input("Enter index: "))
+        data = int(input("Enter data: "))
+
+        # Index cannot be negative
+        if index < 0:
+            print("Invalid index.")
+            return
+
+        # Insert at beginning
+        if index == 0:
+            new_node = Node(data)
+
+            # If list is empty
+            if self.head is None:
+                self.head = new_node
+                new_node.next = self.head
+
+            else:
+                # Find last node
+                temp = self.head
+
+                while temp.next != self.head:
+                    temp = temp.next
+
+                new_node.next = self.head
+                temp.next = new_node
+                self.head = new_node
+
+            print("Node inserted successfully.")
+            return
+
+        # If list is empty and index is not 0
+        if self.head is None:
+            print("Index out of range.")
+            return
+
+        # Find the node before the required index
+        temp = self.head
+
+        for i in range(index - 1):
+
+            temp = temp.next
+
+            # If we have reached the head again,
+            # the index is out of range
+            if temp == self.head:
+                print("Index out of range.")
+                return
+
+        # Create new node
+        new_node = Node(data)
+
+        # Insert new node
+        new_node.next = temp.next
+        temp.next = new_node
+
+        print("Node inserted successfully.")
+
+
+    # 5. Delete by Value
+    def delete_by_value(self):
+        value = int(input("Enter value to delete: "))
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        current = self.head
+        previous = None
+
+        # Search for the value
+        while True:
+
+            if current.data == value:
+
+                # If deleting the first node
+                if current == self.head:
+
+                    # If there is only one node
+                    if current.next == self.head:
+                        self.head = None
+
+                    else:
+                        # Find the last node
+                        last = self.head
+
+                        while last.next != self.head:
+                            last = last.next
+
+                        # Move head to next node
+                        self.head = current.next
+
+                        # Last node points to new head
+                        last.next = self.head
+
+                else:
+                    # Skip the node to be deleted
+                    previous.next = current.next
+
+                print("Node deleted successfully.")
+                return
+
+            previous = current
+            current = current.next
+
+            # If we reached head again,
+            # value was not found
+            if current == self.head:
+                break
+
+        print("Value not found.")
+
+
+    # 6. Delete First Node
+    def delete_first(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        # If there is only one node
+        if self.head.next == self.head:
+            self.head = None
+
+        else:
+            # Find the last node
+            temp = self.head
+
+            while temp.next != self.head:
+                temp = temp.next
+
+            # Move head to the next node
+            self.head = self.head.next
+
+            # Last node points to new head
+            temp.next = self.head
+
+        print("First node deleted successfully.")
+
+
+    # 7. Delete Last Node
+    def delete_last(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        # If there is only one node
+        if self.head.next == self.head:
+            self.head = None
+            print("Last node deleted successfully.")
+            return
+
+        # Find the last and second-last nodes
+        previous = self.head
+        current = self.head.next
+
+        while current.next != self.head:
+            previous = current
+            current = current.next
+
+        # Second-last node points to head
+        previous.next = self.head
+
+        print("Last node deleted successfully.")
+
+
+    # 8. Count Number of Nodes
+    def count_nodes(self):
+        # If list is empty
+        if self.head is None:
+            print("Number of nodes: 0")
+            return
+
+        count = 0
+        temp = self.head
+
+        # Traverse until we reach head again
+        while True:
+            count += 1
+            temp = temp.next
+
+            if temp == self.head:
+                break
+
+        print("Number of nodes:", count)
+
+
+    # 9. Display / Traverse
+    def display(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Circular Linked List is empty.")
+            return
+
+        temp = self.head
+
+        print("Circular Linked List:", end=" ")
+
+        # Traverse the circular list
+        while True:
+            print(temp.data, end=" -> ")
+            temp = temp.next
+
+            # Stop when we reach head again
+            if temp == self.head:
+                break
+
+        print("(back to head)")
+
+
+# Create an object of CircularLinkedList
+cll = CircularLinkedList()
+
+
+# Menu-driven program
+while True:
+
+    print("\n========== CIRCULAR LINKED LIST ==========")
+    print("1. Create Linked List")
+    print("2. Insert Beginning")
+    print("3. Insert End")
+    print("4. Insert at Index")
+    print("5. Delete by Value")
+    print("6. Delete First Node")
+    print("7. Delete Last Node")
+    print("8. Count Number of Nodes")
+    print("9. Display / Traverse")
+    print("10. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        cll.create()
+
+    elif choice == 2:
+        cll.insert_beginning()
+
+    elif choice == 3:
+        cll.insert_end()
+
+    elif choice == 4:
+        cll.insert_at_index()
+
+    elif choice == 5:
+        cll.delete_by_value()
+
+    elif choice == 6:
+        cll.delete_first()
+
+    elif choice == 7:
+        cll.delete_last()
+
+    elif choice == 8:
+        cll.count_nodes()
+
+    elif choice == 9:
+        cll.display()
+
+    elif choice == 10:
+        print("Program terminated.")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
