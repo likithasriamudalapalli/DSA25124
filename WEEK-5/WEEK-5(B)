@@ -1,0 +1,302 @@
+# Node class
+class Node:
+    def __init__(self, data):
+        self.data = data       # Store the data
+        self.prev = None       # Pointer to previous node
+        self.next = None       # Pointer to next node
+
+
+# Doubly Linked List class
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None       # Initially the list is empty
+
+
+    # 1. Create Linked List
+    def create(self):
+        n = int(input("Enter number of nodes: "))
+
+        for i in range(n):
+            data = int(input(f"Enter data for node {i + 1}: "))
+            new_node = Node(data)
+
+            # If the list is empty
+            if self.head is None:
+                self.head = new_node
+
+            else:
+                # Traverse to the last node
+                temp = self.head
+
+                while temp.next is not None:
+                    temp = temp.next
+
+                # Connect the new node
+                temp.next = new_node
+                new_node.prev = temp
+
+        print("Doubly Linked List created successfully.")
+
+
+    # 2. Insert at Beginning
+    def insert_beginning(self):
+        data = int(input("Enter data: "))
+        new_node = Node(data)
+
+        # If list is not empty
+        if self.head is not None:
+            new_node.next = self.head
+            self.head.prev = new_node
+
+        # Make new node the head
+        self.head = new_node
+
+        print("Node inserted at beginning.")
+
+
+    # 3. Insert at End
+    def insert_end(self):
+        data = int(input("Enter data: "))
+        new_node = Node(data)
+
+        # If list is empty
+        if self.head is None:
+            self.head = new_node
+            print("Node inserted at end.")
+            return
+
+        # Traverse to the last node
+        temp = self.head
+
+        while temp.next is not None:
+            temp = temp.next
+
+        # Connect the new node
+        temp.next = new_node
+        new_node.prev = temp
+
+        print("Node inserted at end.")
+
+
+    # 4. Insert at Index
+    def insert_at_index(self):
+        index = int(input("Enter index: "))
+        data = int(input("Enter data: "))
+
+        # Index cannot be negative
+        if index < 0:
+            print("Invalid index.")
+            return
+
+        new_node = Node(data)
+
+        # Insert at beginning
+        if index == 0:
+            new_node.next = self.head
+
+            if self.head is not None:
+                self.head.prev = new_node
+
+            self.head = new_node
+
+            print("Node inserted successfully.")
+            return
+
+        # Find the node before the required index
+        temp = self.head
+
+        for i in range(index - 1):
+            if temp is None:
+                print("Index out of range.")
+                return
+
+            temp = temp.next
+
+        # Check if index is out of range
+        if temp is None:
+            print("Index out of range.")
+            return
+
+        # Connect the new node
+        new_node.next = temp.next
+        new_node.prev = temp
+
+        # If new node is not inserted at the end
+        if temp.next is not None:
+            temp.next.prev = new_node
+
+        temp.next = new_node
+
+        print("Node inserted successfully.")
+
+
+    # 5. Delete by Value
+    def delete_by_value(self):
+        value = int(input("Enter value to delete: "))
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        temp = self.head
+
+        # Search for the value
+        while temp is not None:
+
+            if temp.data == value:
+
+                # If deleting the first node
+                if temp.prev is None:
+                    self.head = temp.next
+
+                    if self.head is not None:
+                        self.head.prev = None
+
+                else:
+                    # Connect previous node to next node
+                    temp.prev.next = temp.next
+
+                    # Connect next node to previous node
+                    if temp.next is not None:
+                        temp.next.prev = temp.prev
+
+                print("Node deleted successfully.")
+                return
+
+            temp = temp.next
+
+        print("Value not found.")
+
+
+    # 6. Delete First Node
+    def delete_first(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        # Move head to the next node
+        self.head = self.head.next
+
+        # Remove previous pointer of new head
+        if self.head is not None:
+            self.head.prev = None
+
+        print("First node deleted successfully.")
+
+
+    # 7. Delete Last Node
+    def delete_last(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        # If there is only one node
+        if self.head.next is None:
+            self.head = None
+            print("Last node deleted successfully.")
+            return
+
+        # Traverse to the last node
+        temp = self.head
+
+        while temp.next is not None:
+            temp = temp.next
+
+        # Remove the last node
+        temp.prev.next = None
+
+        print("Last node deleted successfully.")
+
+
+    # 8. Count Number of Nodes
+    def count_nodes(self):
+        count = 0
+        temp = self.head
+
+        # Traverse through the list
+        while temp is not None:
+            count += 1
+            temp = temp.next
+
+        print("Number of nodes:", count)
+
+
+    # 9. Display / Traverse
+    def display(self):
+
+        # Check if list is empty
+        if self.head is None:
+            print("Linked List is empty.")
+            return
+
+        temp = self.head
+
+        print("Doubly Linked List:", end=" ")
+
+        # Traverse from beginning to end
+        while temp is not None:
+            print(temp.data, end=" <-> ")
+            temp = temp.next
+
+        print("None")
+
+
+# Create object of DoublyLinkedList
+dll = DoublyLinkedList()
+
+
+# Menu-driven program
+while True:
+
+    print("\n========== DOUBLY LINKED LIST ==========")
+    print("1. Create Linked List")
+    print("2. Insert Beginning")
+    print("3. Insert End")
+    print("4. Insert at Index")
+    print("5. Delete by Value")
+    print("6. Delete First Node")
+    print("7. Delete Last Node")
+    print("8. Count Number of Nodes")
+    print("9. Display / Traverse")
+    print("10. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        dll.create()
+
+    elif choice == 2:
+        dll.insert_beginning()
+
+    elif choice == 3:
+        dll.insert_end()
+
+    elif choice == 4:
+        dll.insert_at_index()
+
+    elif choice == 5:
+        dll.delete_by_value()
+
+    elif choice == 6:
+        dll.delete_first()
+
+    elif choice == 7:
+        dll.delete_last()
+
+    elif choice == 8:
+        dll.count_nodes()
+
+    elif choice == 9:
+        dll.display()
+
+    elif choice == 10:
+        print("Program terminated.")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
