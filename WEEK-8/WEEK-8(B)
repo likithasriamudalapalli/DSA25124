@@ -1,0 +1,196 @@
+from collections import deque
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, data):
+        new_node = Node(data)
+
+        if self.root is None:
+            self.root = new_node
+            print("Node inserted successfully")
+            return
+
+        queue = deque([self.root])
+
+        while queue:
+            current = queue.popleft()
+
+            if current.left is None:
+                current.left = new_node
+                print("Node inserted successfully")
+                return
+            else:
+                queue.append(current.left)
+
+            if current.right is None:
+                current.right = new_node
+                print("Node inserted successfully")
+                return
+            else:
+                queue.append(current.right)
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.data, end=" ")
+            self.inorder(node.right)
+
+    def postorder(self, node):
+        if node:
+            self.postorder(node.left)
+            self.postorder(node.right)
+            print(node.data, end=" ")
+
+    def search(self, key):
+        if self.root is None:
+            return False
+
+        queue = deque([self.root])
+
+        while queue:
+            current = queue.popleft()
+
+            if current.data == key:
+                return True
+
+            if current.left:
+                queue.append(current.left)
+
+            if current.right:
+                queue.append(current.right)
+
+        return False
+
+    def delete(self, key):
+        if self.root is None:
+            print("Tree is empty")
+            return
+
+        queue = deque([(self.root, None)])
+        target = None
+        last = None
+        last_parent = None
+
+        while queue:
+            current, parent = queue.popleft()
+
+            if current.data == key and target is None:
+                target = current
+
+            last = current
+            last_parent = parent
+
+            if current.left:
+                queue.append((current.left, current))
+
+            if current.right:
+                queue.append((current.right, current))
+
+        if target is None:
+            print("Element not found")
+            return
+
+        target.data = last.data
+
+        if last_parent is None:
+            self.root = None
+        elif last_parent.right == last:
+            last_parent.right = None
+        else:
+            last_parent.left = None
+
+        print("Node deleted successfully")
+
+    def level_order(self):
+        if self.root is None:
+            print("Tree is empty")
+            return
+
+        queue = deque([self.root])
+
+        while queue:
+            current = queue.popleft()
+            print(current.data, end=" ")
+
+            if current.left:
+                queue.append(current.left)
+
+            if current.right:
+                queue.append(current.right)
+
+
+# Main program
+bt = BinaryTree()
+
+while True:
+    print("\n\n1. Insert")
+    print("2. Preorder Traversal")
+    print("3. Inorder Traversal")
+    print("4. Postorder Traversal")
+    print("5. Search")
+    print("6. Delete")
+    print("7. Level Order Traversal")
+    print("8. Exit")
+
+    try:
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data = int(input("Enter data: "))
+            bt.insert(data)
+
+        elif choice == 2:
+            print("Preorder:", end=" ")
+            bt.preorder(bt.root)
+            print()
+
+        elif choice == 3:
+            print("Inorder:", end=" ")
+            bt.inorder(bt.root)
+            print()
+
+        elif choice == 4:
+            print("Postorder:", end=" ")
+            bt.postorder(bt.root)
+            print()
+
+        elif choice == 5:
+            key = int(input("Enter element to search: "))
+            if bt.search(key):
+                print("Element found")
+            else:
+                print("Element not found")
+
+        elif choice == 6:
+            key = int(input("Enter element to delete: "))
+            bt.delete(key)
+
+        elif choice == 7:
+            print("Level order:", end=" ")
+            bt.level_order()
+            print()
+
+        elif choice == 8:
+            print("Exiting program")
+            break
+
+        else:
+            print("Invalid choice")
+
+    except ValueError:
+        print("Please enter a valid integer")
