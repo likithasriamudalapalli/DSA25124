@@ -1,0 +1,93 @@
+
+class BinaryTree:
+    def __init__(self):
+        self.tree = []
+
+    def insert(self, data):
+        self.tree.append(data)
+        print("Node inserted successfully")
+
+    def preorder(self, i=0):
+        if i < len(self.tree):
+            print(self.tree[i], end=" ")
+            self.preorder(2 * i + 1)
+            self.preorder(2 * i + 2)
+
+    def inorder(self, i=0):
+        if i < len(self.tree):
+            self.inorder(2 * i + 1)
+            print(self.tree[i], end=" ")
+            self.inorder(2 * i + 2)
+
+    def postorder(self, i=0):
+        if i < len(self.tree):
+            self.postorder(2 * i + 1)
+            self.postorder(2 * i + 2)
+            print(self.tree[i], end=" ")
+
+    def search(self, key):
+        if key in self.tree:
+            print("Element found")
+        else:
+            print("Element not found")
+
+    def delete(self, key):
+        if key in self.tree:
+            i = self.tree.index(key)
+            last = self.tree.pop()
+            if i < len(self.tree):
+                self.tree[i] = last
+            print("Node deleted successfully")
+        else:
+            print("Element not found")
+
+    def display(self):
+        print("Array:", self.tree)
+
+
+bt = BinaryTree()
+
+while True:
+    print("\n1. Insert")
+    print("2. Preorder Traversal")
+    print("3. Inorder Traversal")
+    print("4. Postorder Traversal")
+    print("5. Search")
+    print("6. Delete")
+    print("7. Display")
+    print("8. Exit")
+
+    try:
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            data = int(input("Enter data: "))
+            bt.insert(data)
+        elif choice == 2:
+            print("Preorder:", end=" ")
+            bt.preorder()
+            print()
+        elif choice == 3:
+            print("Inorder:", end=" ")
+            bt.inorder()
+            print()
+        elif choice == 4:
+            print("Postorder:", end=" ")
+            bt.postorder()
+            print()
+        elif choice == 5:
+            key = int(input("Enter element to search: "))
+            bt.search(key)
+        elif choice == 6:
+            key = int(input("Enter element to delete: "))
+            bt.delete(key)
+        elif choice == 7:
+            bt.display()
+        elif choice == 8:
+            print("Exiting program")
+            break
+        else:
+            print("Invalid choice")
+
+    except ValueError:
+        print("Please enter a valid integer")
